@@ -1,0 +1,2245 @@
+usage: 
+  certbot [SUBCOMMAND] [options] [-d DOMAIN] [-d DOMAIN] ...
+
+Certbot can obtain and install HTTPS/TLS/SSL certificates.  By default,
+it will attempt to use a webserver both for obtaining and installing the
+certificate. The most common SUBCOMMANDS and flags are:
+
+obtain, install, and renew certificates:
+    (default) run   Obtain & install a certificate in your current webserver
+    certonly        Obtain or renew a certificate, but do not install it
+    renew           Renew all previously obtained certificates that are near expiry
+    enhance         Add security enhancements to your existing configuration
+   -d DOMAINS       Comma-separated list of domains to obtain a certificate for
+
+  (the certbot apache plugin is not installed)
+  --standalone      Run a standalone webserver for authentication
+  (the certbot nginx plugin is not installed)
+  --webroot         Place files in a server's webroot folder for authentication
+  --manual          Obtain certificates interactively, or using shell script hooks
+
+   -n               Run non-interactively
+  --test-cert       Obtain a test certificate from a staging server
+  --dry-run         Test "renew" or "certonly" without saving any certificates to disk
+
+manage certificates:
+    certificates    Display information about certificates you have from Certbot
+    revoke          Revoke a certificate (supply --cert-name or --cert-path)
+    delete          Delete a certificate (supply --cert-name)
+
+manage your account:
+    register        Create an ACME account
+    unregister      Deactivate an ACME account
+    update_account  Update an ACME account
+    show_account    Display account details
+  --agree-tos       Agree to the ACME server's Subscriber Agreement
+   -m EMAIL         Email address for important account notifications
+
+options:
+  -h, --help
+    show this
+    help
+    message and
+    exit
+  -c CONFIG_FILE, --config CONFIG_FILE
+    path to
+    config file
+    (default: /
+    etc/letsenc
+    rypt/cli.in
+    i and ~/.co
+    nfig/letsen
+    crypt/cli.i
+    ni)
+  -v, --verbose
+    This flag
+    can be used
+    multiple
+    times to in
+    crementally
+    increase
+    the
+    verbosity
+    of output,
+    e.g. -vvv.
+    (default:
+    0)
+  --max-log-backups MAX_LOG_BACKUPS
+    Specifies
+    the maximum
+    number of
+    backup logs
+    that should
+    be kept by
+    Certbot's
+    built in
+    log
+    rotation.
+    Setting
+    this flag
+    to 0
+    disables
+    log
+    rotation
+    entirely,
+    causing
+    Certbot to
+    always
+    append to
+    the same
+    log file.
+    (default:
+    1000)
+  -n, --non-interactive, --noninteractive
+    Run without
+    ever asking
+    for user
+    input. This
+    may require
+    additional
+    command
+    line flags;
+    the client
+    will try to
+    explain
+    which ones
+    are
+    required if
+    it finds
+    one missing
+    (default:
+    False)
+  --force-interactive
+    Force
+    Certbot to
+    be
+    interactive
+    even if it
+    detects
+    it's not
+    being run
+    in a
+    terminal.
+    This flag
+    cannot be
+    used with
+    the renew
+    subcommand.
+    (default:
+    False)
+  -d DOMAIN, --domains DOMAIN, --domain DOMAIN
+    Domain
+    names to
+    apply. For
+    multiple
+    domains you
+    can use
+    multiple -d
+    flags or
+    enter a
+    comma
+    separated
+    list of
+    domains as
+    a
+    parameter.
+    The first
+    domain
+    provided
+    will be the
+    subject CN
+    of the cert
+    ificate,
+    and all
+    domains
+    will be
+    Subject
+    Alternative
+    Names on
+    the certifi
+    cate. The
+    first
+    domain will
+    also be
+    used in
+    some
+    software
+    user
+    interfaces
+    and as the
+    file paths
+    for the
+    certificate
+    and related
+    material
+    unless
+    otherwise
+    specified
+    or you
+    already
+    have a
+    certificate
+    with the
+    same name.
+    In the case
+    of a name
+    collision
+    it will
+    append a
+    number like
+    0001 to the
+    file path
+    name.
+    (default:
+    Ask)
+  --eab-kid EAB_KID
+    Key
+    Identifier
+    for
+    External
+    Account
+    Binding
+    (default:
+    None)
+  --eab-hmac-key EAB_HMAC_KEY
+    HMAC key
+    for
+    External
+    Account
+    Binding
+    (default:
+    None)
+  --cert-name CERTNAME
+    Certificate
+    name to
+    apply. This
+    name is
+    used by
+    Certbot for
+    housekeepin
+    g and in
+    file paths;
+    it doesn't
+    affect the
+    content of
+    the
+    certificate
+    itself. To
+    see
+    certificate
+    names, run
+    'certbot ce
+    rtificates'
+    . When
+    creating a
+    new certifi
+    cate,
+    specifies
+    the new cer
+    tificate's
+    name.
+    (default:
+    the first
+    provided
+    domain or
+    the name of
+    an existing
+    certificate
+    on your
+    system for
+    the same
+    domains)
+  --dry-run
+    Perform a
+    test run of
+    the client,
+    obtaining
+    test
+    (invalid) c
+    ertificates
+    but not
+    saving them
+    to disk.
+    This can
+    currently
+    only be
+    used with
+    the
+    'certonly'
+    and 'renew'
+    subcommands
+    . Note:
+    Although
+    --dry-run
+    tries to
+    avoid
+    making any
+    persistent
+    changes on
+    a system,
+    it is not
+    completely
+    side-effect
+    free: if
+    used with
+    webserver a
+    uthenticato
+    r plugins
+    like apache
+    and nginx,
+    it makes
+    and then
+    reverts
+    temporary
+    config
+    changes in
+    order to
+    obtain test
+    certificate
+    s, and
+    reloads
+    webservers
+    to deploy
+    and then
+    roll back
+    those
+    changes. It
+    also calls
+    --pre-hook
+    and --post-
+    hook
+    commands if
+    they are
+    defined
+    because
+    they may be
+    necessary
+    to
+    accurately
+    simulate
+    renewal.
+    --deploy-
+    hook
+    commands
+    are not
+    called.
+    (default:
+    False)
+  --debug-challenges
+    After
+    setting up
+    challenges,
+    wait for
+    user input
+    before
+    submitting
+    to CA. When
+    used in
+    combination
+    with the
+    `-v`
+    option, the
+    challenge
+    URLs or
+    FQDNs and
+    their
+    expected
+    return
+    values are
+    shown.
+    (default:
+    False)
+  --preferred-chain PREFERRED_CHAIN
+    Set the
+    preferred
+    certificate
+    chain. If
+    the CA
+    offers
+    multiple
+    certificate
+    chains,
+    prefer the
+    chain whose
+    topmost
+    certificate
+    was issued
+    from this
+    Subject
+    Common
+    Name. If no
+    match, the
+    default
+    offered
+    chain will
+    be used.
+    (default:
+    None)
+  --preferred-challenges PREF_CHALLS
+    A sorted,
+    comma
+    delimited
+    list of the
+    preferred
+    challenge
+    to use
+    during auth
+    orization
+    with the
+    most
+    preferred
+    challenge
+    listed
+    first (Eg,
+    "dns" or "h
+    ttp,dns").
+    Not all
+    plugins
+    support all
+    challenges.
+    See https:/
+    /certbot.ef
+    f.org/docs/
+    using.html#
+    plugins for
+    details.
+    ACME
+    Challenges
+    are
+    versioned,
+    but if you
+    pick "http"
+    rather than
+    "http-01",
+    Certbot
+    will select
+    the latest
+    version aut
+    omatically.
+    (default:
+    [])
+  --issuance-timeout ISSUANCE_TIMEOUT
+    This option
+    specifies
+    how long
+    (in
+    seconds)
+    Certbot
+    will wait
+    for the
+    server to
+    issue a cer
+    tificate.
+    (default:
+    90)
+  --user-agent USER_AGENT
+    Set a
+    custom user
+    agent
+    string for
+    the client.
+    User agent
+    strings
+    allow the
+    CA to
+    collect
+    high level
+    statistics
+    about
+    success
+    rates by
+    OS, plugin
+    and use
+    case, and
+    to know
+    when to
+    deprecate
+    support for
+    past Python
+    versions
+    and flags.
+    If you wish
+    to hide
+    this
+    information
+    from the
+    Let's
+    Encrypt
+    server, set
+    this to "".
+    (default: C
+    ertbotACMEC
+    lient/1.32.
+    0 (certbot;
+    Alpine
+    Linux
+    v3.16) Auth
+    enticator/X
+    XX Installe
+    r/YYY (SUBC
+    OMMAND;
+    flags:
+    FLAGS)
+    Py/3.10.8).
+    The flags
+    encoded in
+    the user
+    agent are: 
+    --duplicate
+    , --force-
+    renew,
+    --allow-
+    subset-of-
+    names, -n,
+    and whether
+    any hooks
+    are set.
+  --user-agent-comment USER_AGENT_COMMENT
+    Add a
+    comment to
+    the default
+    user agent
+    string. May
+    be used
+    when
+    repackaging
+    Certbot or
+    calling it
+    from
+    another
+    tool to
+    allow
+    additional
+    statistical
+    data to be
+    collected.
+    Ignored if
+    --user-
+    agent is
+    set.
+    (Example:
+    Foo-Wrapper
+    /1.0)
+    (default:
+    None)
+
+automation:
+  Flags for
+  automatin
+  g
+  execution
+  & other
+  tweaks
+
+  --keep-until-expiring, --keep, --reinstall
+    If the
+    requested
+    certificate
+    matches an
+    existing ce
+    rtificate,
+    always keep
+    the
+    existing
+    one until
+    it is due
+    for renewal
+    (for the
+    'run'
+    subcommand
+    this means
+    reinstall
+    the
+    existing ce
+    rtificate).
+    (default:
+    Ask)
+  --expand
+    If an
+    existing
+    certificate
+    is a strict
+    subset of
+    the
+    requested
+    names,
+    always
+    expand and
+    replace it
+    with the
+    additional
+    names.
+    (default:
+    Ask)
+  --version
+    show
+    program's
+    version
+    number and
+    exit
+  --force-renewal, --renew-by-default
+    If a
+    certificate
+    already
+    exists for
+    the
+    requested
+    domains,
+    renew it
+    now,
+    regardless
+    of whether
+    it is near
+    expiry.
+    (Often
+    --keep-
+    until-
+    expiring is
+    more approp
+    riate).
+    Also
+    implies
+    --expand.
+    (default:
+    False)
+  --renew-with-new-domains
+    If a
+    certificate
+    already
+    exists for
+    the
+    requested
+    certificate
+    name but
+    does not
+    match the
+    requested
+    domains,
+    renew it
+    now,
+    regardless
+    of whether
+    it is near
+    expiry.
+    (default:
+    False)
+  --reuse-key
+    When
+    renewing,
+    use the
+    same
+    private key
+    as the
+    existing ce
+    rtificate.
+    (default:
+    False)
+  --no-reuse-key
+    When
+    renewing,
+    do not use
+    the same
+    private key
+    as the
+    existing ce
+    rtificate.
+    Not reusing
+    private
+    keys is the
+    default
+    behavior of
+    Certbot.
+    This option
+    may be used
+    to unset
+    --reuse-key
+    on an
+    existing ce
+    rtificate.
+    (default:
+    False)
+  --new-key
+    When
+    renewing or
+    replacing a
+    certificate
+    , generate
+    a new
+    private
+    key, even
+    if --reuse-
+    key is set
+    on the
+    existing ce
+    rtificate.
+    Combining
+    --new-key
+    and
+    --reuse-key
+    will result
+    in the
+    private key
+    being
+    replaced
+    and then
+    reused in
+    future
+    renewals.
+    (default:
+    False)
+  --allow-subset-of-names
+    When
+    performing
+    domain
+    validation,
+    do not
+    consider it
+    a failure
+    if authoriz
+    ations can
+    not be
+    obtained
+    for a
+    strict
+    subset of
+    the
+    requested
+    domains.
+    This may be
+    useful for
+    allowing
+    renewals
+    for
+    multiple
+    domains to
+    succeed
+    even if
+    some
+    domains no
+    longer
+    point at
+    this
+    system.
+    This option
+    cannot be
+    used with
+    --csr.
+    (default:
+    False)
+  --agree-tos
+    Agree to
+    the ACME
+    Subscriber
+    Agreement
+    (default:
+    Ask)
+  --duplicate
+    Allow
+    making a
+    certificate
+    lineage
+    that
+    duplicates
+    an existing
+    one (both
+    can be
+    renewed in
+    parallel)
+    (default:
+    False)
+  -q, --quiet
+    Silence all
+    output
+    except
+    errors.
+    Useful for
+    automation
+    via cron.
+    Implies
+    --non-inter
+    active.
+    (default:
+    False)
+
+security:
+  Security 
+  parameter
+  s &
+  server
+  settings
+
+  --rsa-key-size N
+    Size of the
+    RSA key.
+    (default:
+    2048)
+  --key-type {rsa,ecdsa}
+    Type of
+    generated
+    private
+    key. Only
+    *ONE* per
+    invocation
+    can be
+    provided at
+    this time.
+    (default:
+    rsa)
+  --elliptic-curve N
+    The SECG
+    elliptic
+    curve name
+    to use.
+    Please see
+    RFC 8446
+    for
+    supported
+    values.
+    (default:
+    secp256r1)
+  --must-staple
+    Adds the
+    OCSP Must-
+    Staple
+    extension
+    to the cert
+    ificate. Au
+    toconfigure
+    s OCSP
+    Stapling
+    for
+    supported
+    setups
+    (Apache
+    version >=
+    2.3.3 ).
+    (default:
+    False)
+  --redirect
+    Automatical
+    ly redirect
+    all HTTP
+    traffic to
+    HTTPS for
+    the newly a
+    uthenticate
+    d vhost.
+    (default:
+    redirect
+    enabled for
+    install and
+    run,
+    disabled
+    for
+    enhance)
+  --no-redirect
+    Do not auto
+    matically
+    redirect
+    all HTTP
+    traffic to
+    HTTPS for
+    the newly a
+    uthenticate
+    d vhost.
+    (default:
+    redirect
+    enabled for
+    install and
+    run,
+    disabled
+    for
+    enhance)
+  --hsts
+    Add the
+    Strict-
+    Transport-
+    Security
+    header to
+    every HTTP
+    response.
+    Forcing
+    browser to
+    always use
+    SSL for the
+    domain.
+    Defends
+    against SSL
+    Stripping.
+    (default:
+    None)
+  --uir
+    Add the
+    "Content-
+    Security-
+    Policy:
+    upgrade-
+    insecure-
+    requests"
+    header to
+    every HTTP
+    response.
+    Forcing the
+    browser to
+    use
+    https://
+    for every
+    http://
+    resource.
+    (default:
+    None)
+  --staple-ocsp
+    Enables
+    OCSP
+    Stapling. A
+    valid OCSP
+    response is
+    stapled to
+    the
+    certificate
+    that the
+    server
+    offers
+    during TLS.
+    (default:
+    None)
+  --strict-permissions
+    Require
+    that all co
+    nfiguration
+    files are
+    owned by
+    the current
+    user; only
+    needed if
+    your config
+    is
+    somewhere
+    unsafe like
+    /tmp/
+    (default:
+    False)
+  --auto-hsts
+    Gradually
+    increasing
+    max-age
+    value for
+    HTTP Strict
+    Transport
+    Security
+    security
+    header
+    (default:
+    False)
+
+testing:
+  The
+  following
+  flags are
+  meant for
+  testing
+  and integ
+  ration
+  purposes
+  only.
+
+  --test-cert, --staging
+    Use the
+    staging
+    server to
+    obtain or
+    revoke test
+    (invalid) c
+    ertificates
+    ;
+    equivalent
+    to --server
+    https://acm
+    e-staging-
+    v02.api.let
+    sencrypt.or
+    g/directory
+    (default:
+    False)
+  --debug
+    Show
+    tracebacks
+    in case of
+    errors
+    (default:
+    False)
+  --no-verify-ssl
+    Disable ver
+    ification
+    of the ACME
+    server's ce
+    rtificate.
+    The root ce
+    rtificates
+    trusted by
+    Certbot can
+    be
+    overriden
+    by setting
+    the REQUEST
+    S_CA_BUNDLE
+    environment
+    variable.
+    (default:
+    False)
+  --http-01-port HTTP01_PORT
+    Port used
+    in the
+    http-01
+    challenge.
+    This only
+    affects the
+    port
+    Certbot
+    listens on.
+    A
+    conforming
+    ACME server
+    will still
+    attempt to
+    connect on
+    port 80.
+    (default:
+    80)
+  --http-01-address HTTP01_ADDRESS
+    The address
+    the server
+    listens to
+    during
+    http-01
+    challenge.
+    (default: )
+  --https-port HTTPS_PORT
+    Port used
+    to serve
+    HTTPS. This
+    affects
+    which port
+    Nginx will
+    listen on
+    after a LE
+    certificate
+    is
+    installed.
+    (default:
+    443)
+  --break-my-certs
+    Be willing
+    to replace
+    or renew
+    valid certi
+    ficates
+    with
+    invalid (te
+    sting/stagi
+    ng) certifi
+    cates
+    (default:
+    False)
+
+paths:
+  Flags for
+  changing
+  execution
+  paths &
+  servers
+
+  --cert-path CERT_PATH
+    Path to
+    where
+    certificate
+    is saved
+    (with
+    certonly
+    --csr),
+    installed
+    from, or
+    revoked
+    (default:
+    None)
+  --key-path KEY_PATH
+    Path to
+    private key
+    for
+    certificate
+    installatio
+    n or
+    revocation
+    (if account
+    key is
+    missing)
+    (default:
+    None)
+  --fullchain-path FULLCHAIN_PATH
+    Accompanyin
+    g path to a
+    full
+    certificate
+    chain (cert
+    ificate
+    plus
+    chain).
+    (default:
+    None)
+  --chain-path CHAIN_PATH
+    Accompanyin
+    g path to a
+    certificate
+    chain.
+    (default:
+    None)
+  --config-dir CONFIG_DIR
+    Configurati
+    on
+    directory.
+    (default: /
+    etc/letsenc
+    rypt)
+  --work-dir WORK_DIR
+    Working
+    directory.
+    (default: /
+    var/lib/let
+    sencrypt)
+  --logs-dir LOGS_DIR
+    Logs
+    directory.
+    (default: /
+    var/log/let
+    sencrypt)
+  --server SERVER
+    ACME
+    Directory
+    Resource
+    URI.
+    (default: h
+    ttps://acme
+    -v02.api.le
+    tsencrypt.o
+    rg/director
+    y)
+
+manage:
+  Various s
+  ubcommand
+  s and
+  flags are
+  available
+  for
+  managing
+  your cert
+  ificates:
+
+  certificates
+    List certif
+    icates
+    managed by
+    Certbot
+  delete
+    Clean up
+    all files
+    related to
+    a
+    certificate
+  renew
+    Renew all c
+    ertificates
+    (or one
+    specified
+    with
+    --cert-
+    name)
+  revoke
+    Revoke a
+    certificate
+    specified
+    with
+    --cert-path
+    or --cert-
+    name
+  update_symlinks
+    Recreate
+    symlinks in
+    your /etc/l
+    etsencrypt/
+    live/
+    directory
+
+run:
+  Options
+  for
+  obtaining
+  & install
+  ing certi
+  ficates
+
+certonly:
+  Options
+  for
+  modifying
+  how a cer
+  tificate
+  is
+  obtained
+
+  --csr CSR
+    Path to a
+    Certificate
+    Signing
+    Request
+    (CSR) in
+    DER or PEM
+    format.
+    Currently
+    --csr only
+    works with
+    the
+    'certonly'
+    subcommand.
+    (default:
+    None)
+
+renew:
+  The
+  'renew' s
+  ubcommand
+  will
+  attempt
+  to renew
+  any certi
+  ficates p
+  reviously
+  obtained
+  if they
+  are close
+  to
+  expiry,
+  and print
+  a summary
+  of the
+  results.
+  By
+  default,
+  'renew'
+  will
+  reuse the
+  plugins
+  and
+  options
+  used to
+  obtain or
+  most
+  recently
+  renew
+  each cert
+  ificate.
+  You can
+  test
+  whether
+  future
+  renewals
+  will
+  succeed
+  with
+  `--dry-
+  run`. Ind
+  ividual c
+  ertificat
+  es can be
+  renewed
+  with the
+  `--cert-
+  name`
+  option.
+  Hooks are
+  available
+  to run
+  commands
+  before
+  and after
+  renewal;
+  see https
+  ://certbo
+  t.eff.org
+  /docs/usi
+  ng.html#r
+  enewal
+  for more 
+  informati
+  on on
+  these.
+
+  --pre-hook PRE_HOOK
+    Command to
+    be run in a
+    shell
+    before
+    obtaining
+    any certifi
+    cates.
+    Intended
+    primarily
+    for
+    renewal,
+    where it
+    can be used
+    to
+    temporarily
+    shut down a
+    webserver
+    that might
+    conflict
+    with the
+    standalone
+    plugin.
+    This will
+    only be
+    called if a
+    certificate
+    is actually
+    to be obtai
+    ned/renewed
+    . When
+    renewing
+    several cer
+    tificates
+    that have
+    identical
+    pre-hooks,
+    only the
+    first will
+    be
+    executed.
+    (default:
+    None)
+  --post-hook POST_HOOK
+    Command to
+    be run in a
+    shell after
+    attempting
+    to obtain/r
+    enew certif
+    icates. Can
+    be used to
+    deploy
+    renewed cer
+    tificates,
+    or to
+    restart any
+    servers
+    that were
+    stopped by
+    --pre-hook.
+    This is
+    only run if
+    an attempt
+    was made to
+    obtain/rene
+    w a certifi
+    cate. If
+    multiple
+    renewed cer
+    tificates
+    have
+    identical
+    post-hooks,
+    only one
+    will be
+    run.
+    (default:
+    None)
+  --deploy-hook DEPLOY_HOOK
+    Command to
+    be run in a
+    shell once
+    for each su
+    ccessfully
+    issued cert
+    ificate.
+    For this
+    command,
+    the shell
+    variable $R
+    ENEWED_LINE
+    AGE will
+    point to
+    the config
+    live subdir
+    ectory (for
+    example, "/
+    etc/letsenc
+    rypt/live/e
+    xample.com"
+    )
+    containing
+    the new cer
+    tificates
+    and keys;
+    the shell
+    variable $R
+    ENEWED_DOMA
+    INS will
+    contain a
+    space-
+    delimited
+    list of
+    renewed
+    certificate
+    domains
+    (for
+    example, "e
+    xample.com 
+    www.example
+    .com")
+    (default:
+    None)
+  --disable-hook-validation
+    Ordinarily
+    the
+    commands
+    specified
+    for --pre-h
+    ook/--post-
+    hook/--
+    deploy-hook
+    will be
+    checked for
+    validity,
+    to see if
+    the
+    programs
+    being run
+    are in the
+    $PATH, so
+    that
+    mistakes
+    can be
+    caught
+    early, even
+    when the
+    hooks
+    aren't
+    being run
+    just yet.
+    The
+    validation
+    is rather
+    simplistic
+    and fails
+    if you use
+    more
+    advanced
+    shell
+    constructs,
+    so you can
+    use this
+    switch to
+    disable it.
+    (default:
+    False)
+  --no-directory-hooks
+    Disable
+    running
+    executables
+    found in
+    Certbot's
+    hook
+    directories
+    during
+    renewal.
+    (default:
+    False)
+  --disable-renew-updates
+    Disable
+    automatic
+    updates to
+    your server
+    configurati
+    on that
+    would
+    otherwise
+    be done by
+    the
+    selected
+    installer
+    plugin, and
+    triggered
+    when the
+    user
+    executes
+    "certbot
+    renew",
+    regardless
+    of if the
+    certificate
+    is renewed.
+    This
+    setting
+    does not
+    apply to
+    important
+    TLS configu
+    ration
+    updates.
+    (default:
+    False)
+  --no-autorenew
+    Disable
+    auto
+    renewal of 
+    certificate
+    s.
+    (default:
+    False)
+
+certificates:
+  List cert
+  ificates
+  managed
+  by
+  Certbot
+
+delete:
+  Options
+  for
+  deleting
+  a certifi
+  cate
+
+revoke:
+  Options
+  for revoc
+  ation of 
+  certifica
+  tes
+
+  --reason {unspecified,keycompromise,affiliationchanged,superseded,cessationofoperation}
+    Specify
+    reason for
+    revoking ce
+    rtificate.
+    (default: u
+    nspecified)
+  --delete-after-revoke
+    Delete cert
+    ificates
+    after
+    revoking
+    them, along
+    with all
+    previous
+    and later
+    versions of
+    those certi
+    ficates.
+    (default:
+    None)
+  --no-delete-after-revoke
+    Do not
+    delete cert
+    ificates
+    after
+    revoking
+    them. This
+    option
+    should be
+    used with
+    caution
+    because the
+    'renew'
+    subcommand
+    will
+    attempt to
+    renew
+    undeleted
+    revoked cer
+    tificates.
+    (default:
+    None)
+
+register:
+  Options
+  for
+  account r
+  egistrati
+  on
+
+  --register-unsafely-without-email
+    Specifying
+    this flag
+    enables
+    registering
+    an account
+    with no
+    email
+    address.
+    This is
+    strongly di
+    scouraged,
+    because you
+    will be
+    unable to
+    receive
+    notice
+    about
+    impending
+    expiration
+    or
+    revocation
+    of your cer
+    tificates
+    or problems
+    with your
+    Certbot ins
+    tallation
+    that will
+    lead to
+    failure to
+    renew.
+    (default:
+    False)
+  -m EMAIL, --email EMAIL
+    Email used
+    for registr
+    ation and
+    recovery
+    contact.
+    Use comma
+    to register
+    multiple
+    emails, ex:
+    u1@example.
+    com,u2@exam
+    ple.com.
+    (default:
+    Ask).
+  --eff-email
+    Share your
+    e-mail
+    address
+    with EFF
+    (default:
+    None)
+  --no-eff-email
+    Don't share
+    your e-mail
+    address
+    with EFF
+    (default:
+    None)
+
+update_account:
+  Options
+  for
+  account m
+  odificati
+  on
+
+unregister:
+  Options
+  for
+  account d
+  eactivati
+  on.
+
+  --account ACCOUNT_ID
+    Account ID
+    to use
+    (default:
+    None)
+
+install:
+  Options
+  for
+  modifying
+  how a cer
+  tificate
+  is
+  deployed
+
+rollback:
+  Options
+  for
+  rolling
+  back
+  server co
+  nfigurati
+  on
+  changes
+
+  --checkpoints N
+    Revert conf
+    iguration N
+    number of c
+    heckpoints.
+    (default:
+    1)
+
+plugins:
+  Options
+  for the
+  "plugins"
+  subcomman
+  d
+
+  --init
+    Initialize
+    plugins.
+    (default:
+    False)
+  --prepare
+    Initialize
+    and prepare
+    plugins.
+    (default:
+    False)
+  --authenticators
+    Limit to au
+    thenticator
+    plugins
+    only.
+    (default:
+    None)
+  --installers
+    Limit to
+    installer
+    plugins
+    only.
+    (default:
+    None)
+
+update_symlinks:
+  Recreates
+  certifica
+  te and
+  key
+  symlinks
+  in /etc/l
+  etsencryp
+  t/live,
+  if you
+  changed
+  them by
+  hand or
+  edited a
+  renewal c
+  onfigurat
+  ion file
+
+enhance:
+  Helps to
+  harden
+  the TLS c
+  onfigurat
+  ion by
+  adding
+  security 
+  enhanceme
+  nts to
+  already
+  existing 
+  configura
+  tion.
+
+show_account:
+  Options
+  useful
+  for the "
+  show_acco
+  unt" subc
+  ommand:
+
+plugins:
+  Plugin Se
+  lection:
+  Certbot
+  client
+  supports
+  an extens
+  ible
+  plugins a
+  rchitectu
+  re. See
+  'certbot
+  plugins'
+  for a
+  list of
+  all
+  installed
+  plugins
+  and their
+  names.
+  You can
+  force a p
+  articular
+  plugin by
+  setting
+  options
+  provided
+  below.
+  Running
+  --help <p
+  lugin_nam
+  e> will
+  list
+  flags
+  specific
+  to that
+  plugin.
+
+  --configurator CONFIGURATOR
+    Name of the
+    plugin that
+    is both an 
+    authenticat
+    or and an
+    installer.
+    Should not
+    be used
+    together
+    with --auth
+    enticator
+    or --instal
+    ler.
+    (default:
+    Ask)
+  -a AUTHENTICATOR, --authenticator AUTHENTICATOR
+    Authenticat
+    or plugin
+    name.
+    (default:
+    None)
+  -i INSTALLER, --installer INSTALLER
+    Installer
+    plugin name
+    (also used
+    to find
+    domains).
+    (default:
+    None)
+  --apache
+    Obtain and
+    install cer
+    tificates
+    using
+    Apache
+    (default:
+    False)
+  --nginx
+    Obtain and
+    install cer
+    tificates
+    using Nginx
+    (default:
+    False)
+  --standalone
+    Obtain cert
+    ificates
+    using a "st
+    andalone"
+    webserver.
+    (default:
+    False)
+  --manual
+    Provide
+    laborious
+    manual inst
+    ructions
+    for
+    obtaining a
+    certificate
+    (default:
+    False)
+  --webroot
+    Obtain cert
+    ificates by
+    placing
+    files in a
+    webroot
+    directory.
+    (default:
+    False)
+  --dns-cloudflare
+    Obtain cert
+    ificates
+    using a DNS
+    TXT record
+    (if you are
+    using
+    Cloudflare
+    for DNS).
+    (default:
+    False)
+  --dns-cloudxns
+    Obtain cert
+    ificates
+    using a DNS
+    TXT record
+    (if you are
+    using
+    CloudXNS
+    for DNS).
+    (default:
+    False)
+  --dns-digitalocean
+    Obtain cert
+    ificates
+    using a DNS
+    TXT record
+    (if you are
+    using Digit
+    alOcean for
+    DNS).
+    (default:
+    False)
+  --dns-dnsimple
+    Obtain cert
+    ificates
+    using a DNS
+    TXT record
+    (if you are
+    using
+    DNSimple
+    for DNS).
+    (default:
+    False)
+  --dns-dnsmadeeasy
+    Obtain cert
+    ificates
+    using a DNS
+    TXT record
+    (if you are
+    using DNS
+    Made Easy
+    for DNS).
+    (default:
+    False)
+  --dns-gehirn
+    Obtain cert
+    ificates
+    using a DNS
+    TXT record
+    (if you are
+    using
+    Gehirn Infr
+    astructure
+    Service for
+    DNS).
+    (default:
+    False)
+  --dns-google
+    Obtain cert
+    ificates
+    using a DNS
+    TXT record
+    (if you are
+    using
+    Google
+    Cloud DNS).
+    (default:
+    False)
+  --dns-linode
+    Obtain cert
+    ificates
+    using a DNS
+    TXT record
+    (if you are
+    using
+    Linode for
+    DNS).
+    (default:
+    False)
+  --dns-luadns
+    Obtain cert
+    ificates
+    using a DNS
+    TXT record
+    (if you are
+    using
+    LuaDNS for
+    DNS).
+    (default:
+    False)
+  --dns-nsone
+    Obtain cert
+    ificates
+    using a DNS
+    TXT record
+    (if you are
+    using NS1
+    for DNS).
+    (default:
+    False)
+  --dns-ovh
+    Obtain cert
+    ificates
+    using a DNS
+    TXT record
+    (if you are
+    using OVH
+    for DNS).
+    (default:
+    False)
+  --dns-rfc2136
+    Obtain cert
+    ificates
+    using a DNS
+    TXT record
+    (if you are
+    using BIND
+    for DNS).
+    (default:
+    False)
+  --dns-route53
+    Obtain cert
+    ificates
+    using a DNS
+    TXT record
+    (if you are
+    using
+    Route53 for
+    DNS).
+    (default:
+    False)
+  --dns-sakuracloud
+    Obtain cert
+    ificates
+    using a DNS
+    TXT record
+    (if you are
+    using
+    Sakura
+    Cloud for
+    DNS).
+    (default:
+    False)
+
+manual:
+  Authentic
+  ate
+  through
+  manual co
+  nfigurati
+  on or
+  custom
+  shell
+  scripts.
+  When
+  using
+  shell
+  scripts,
+  an authen
+  ticator
+  script
+  must be
+  provided.
+  The envir
+  onment
+  variables
+  available
+  to this
+  script
+  depend on
+  the type
+  of challe
+  nge. $CER
+  TBOT_DOMA
+  IN will
+  always
+  contain
+  the
+  domain
+  being aut
+  henticate
+  d. For
+  HTTP-01
+  and
+  DNS-01, $
+  CERTBOT_V
+  ALIDATION
+  is the va
+  lidation
+  string,
+  and $CERT
+  BOT_TOKEN
+  is the
+  filename
+  of the
+  resource
+  requested
+  when perf
+  orming an
+  HTTP-01 c
+  hallenge.
+  An additi
+  onal
+  cleanup
+  script
+  can also
+  be
+  provided
+  and can
+  use the a
+  dditional
+  variable 
+  $CERTBOT_
+  AUTH_OUTP
+  UT which
+  contains
+  the
+  stdout
+  output
+  from the
+  auth
+  script.
+  For both 
+  authentic
+  ator and
+  cleanup
+  script,
+  on
+  HTTP-01
+  and
+  DNS-01 ch
+  allenges,
+  $CERTBOT_
+  REMAINING
+  _CHALLENG
+  ES will
+  be equal
+  to the
+  number of
+  challenge
+  s that
+  remain
+  after the
+  current
+  one, and 
+  $CERTBOT_
+  ALL_DOMAI
+  NS
+  contains
+  a comma-
+  separated
+  list of
+  all
+  domains
+  that are 
+  challenge
+  d for the
+  current c
+  ertificat
+  e.
+
+  --manual-auth-hook MANUAL_AUTH_HOOK
+    Path or
+    command to
+    execute for
+    the authent
+    ication
+    script
+    (default:
+    None)
+  --manual-cleanup-hook MANUAL_CLEANUP_HOOK
+    Path or
+    command to
+    execute for
+    the cleanup
+    script
+    (default:
+    None)
+
+null:
+  Null
+  Installer
+
+standalone:
+  Spin up a
+  temporary
+  webserver
+
+webroot:
+  Place
+  files in
+  webroot
+  directory
+
+  --webroot-path WEBROOT_PATH, -w WEBROOT_PATH
+    public_html
+    / webroot
+    path. This
+    can be
+    specified
+    multiple
+    times to
+    handle
+    different
+    domains;
+    each domain
+    will have
+    the webroot
+    path that
+    preceded
+    it. For
+    instance:
+    `-w /var/ww
+    w/example
+    -d
+    example.com
+    -d www.exam
+    ple.com -w 
+    /var/www/th
+    ing -d
+    thing.net
+    -d m.thing.
+    net`
+    (default:
+    Ask)
+  --webroot-map WEBROOT_MAP
+    JSON
+    dictionary
+    mapping
+    domains to
+    webroot
+    paths; this
+    implies -d
+    for each
+    entry. You
+    may need to
+    escape this
+    from your
+    shell.
+    E.g.:
+    --webroot-
+    map '{"eg1.
+    is,m.eg1.is
+    ":"/www/eg1
+    /", "eg2.is
+    ":"/www/eg2
+    "}' This
+    option is
+    merged
+    with, but
+    takes
+    precedence
+    over, -w /
+    -d entries.
+    At present,
+    if you put
+    webroot-map
+    in a config
+    file, it
+    needs to be
+    on a single
+    line, like:
+    webroot-map
+    = {"example
+    .com":"/var
+    /www"}.
+    (default:
+    {})

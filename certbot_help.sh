@@ -1,0 +1,1 @@
+sudo docker run -p 80:80 -it --rm certbot/certbot -h all
